@@ -70,6 +70,7 @@ section .task-col{
     flex-direction: column;
     gap:var(--padding-m);
     cursor:grab;
+    transition :all 0.7s cubic-bezier(0.19,1,0.22,1)
 }
 .task-col .heading{
 width: 100%;    
@@ -98,4 +99,9 @@ section .task-col .task .button{
    outline: none;
    color:#ffffff;
    background-color: #ff000086;
+}
+
+section .task-col.hover-over{
+    border:2px dashed black;
+    scale:1.02;
 }
