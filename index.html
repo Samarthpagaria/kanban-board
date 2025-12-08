@@ -16,7 +16,7 @@
     <main>
       <nav>
         <div class="left">Kanban</div>
-        <button class="right">Add New Task</button>
+        <button class="right" id="toggle-modal">Add New Task</button>
       </nav>
       <section class="board">
         <div id="todo" class="task-col">
@@ -45,6 +45,14 @@
         </div>
       </section>
     </main>
+    <div class="modal add-new-task">
+      <div class="bg"></div>
+      <div class="center">
+        <input type="text" placeholder="Task Title" />
+        <textarea placeholder="Task description"></textarea>
+        <button id="add-task-btn" class="add-task-btn">Add Task</button>
+      </div>
+    </div>
   </body>
   <script src="script.js"></script>
 </html>

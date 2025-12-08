@@ -105,3 +105,57 @@ section .task-col.hover-over{
     border:2px dashed black;
     scale:1.02;
 }
+
+.modal{
+    position:fixed;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100 ;
+}
+.modal.active{
+    display: flex;
+}
+.modal .center{
+    background-color: #fff;
+    padding:var(--padding-xxl);
+    border-radius: var(--br-xxl);
+    display: flex;
+    flex-direction: column;
+    gap:var(--padding-m);
+    position: relative;
+    z-index: 1;
+}
+.modal .bg{
+    position:absolute;
+    top:0;
+    left:0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.297);
+    backdrop-filter: blur(10px);
+}
+.modal .center input,.modal .center textarea{
+    background-color:#fff;
+    color:#21201F;
+    border-radius: var(--br-xl);
+    padding: var(--padding-m);
+    border:1px solid #ccc;
+}
+.modal .center button{
+    background-color: #000000;
+    color:#fff;
+    border-radius: var(--br-xl);
+    padding: var(--padding-m);
+    border:1px solid #000000;
+    cursor: pointer;
+}   
+.modal .center button:hover{
+    background-color: #2a2828;
+    color:#fff;
+    border:1px solid #000000;
+}
