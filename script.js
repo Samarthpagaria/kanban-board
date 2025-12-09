@@ -26,6 +26,7 @@ addTaskBtn.addEventListener("click", () => {
   const taskDescription = document.querySelector("textarea").value;
   const task = document.createElement("div");
   task.classList.add("task");
+  task.setAttribute("draggable", "true");
   const titleEl = document.createElement("h2");
   titleEl.textContent = taskTitle;
   const descriptionEl = document.createElement("p");
@@ -34,11 +35,18 @@ addTaskBtn.addEventListener("click", () => {
   const deleteBtn = document.createElement("button");
   deleteBtn.textContent = "Delete";
   deleteBtn.classList.add("button");
-
+  if (taskTitle.trim() === "" || taskDescription.trim() === "") {
+    alert("Task title and description cannot be empty");
+    modal.classList.remove("active");
+    return;
+  }
   task.appendChild(titleEl);
   task.appendChild(descriptionEl);
   task.appendChild(deleteBtn);
   todo.appendChild(task);
+  task.addEventListener("drag", (e) => {
+    dragElement = task;
+  });
   modal.classList.remove("active");
   document.querySelector("input").value = "";
   document.querySelector("textarea").value = "";
