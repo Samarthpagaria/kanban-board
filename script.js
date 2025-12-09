@@ -44,8 +44,14 @@ addTaskBtn.addEventListener("click", () => {
   task.appendChild(descriptionEl);
   task.appendChild(deleteBtn);
   todo.appendChild(task);
+
   task.addEventListener("drag", (e) => {
     dragElement = task;
+  });
+  [todo, progress, done].forEach((col) => {
+    const task = col.querySelectorAll(".task");
+    const count = col.querySelector(".right");
+    count.textContent = task.length;
   });
   modal.classList.remove("active");
   document.querySelector("input").value = "";
@@ -68,6 +74,12 @@ function addDragEventsOnColumn(column) {
     column.appendChild(dragElement);
     dragElement = null;
     column.classList.remove("hover-over");
+
+    [todo, progress, done].forEach((col) => {
+      const task = col.querySelectorAll(".task");
+      const count = col.querySelector(".right");
+      count.textContent = task.length;
+    });
   });
 }
 addDragEventsOnColumn(todo);
