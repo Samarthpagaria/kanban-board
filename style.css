@@ -44,6 +44,29 @@ align-items: center;
 justify-content: space-between;
 }
 
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.docs-btn {
+    background-color: transparent;
+    border: 1px solid var(--primary-text-color);
+    color: var(--primary-text-color);
+    text-decoration: none;
+    padding: var(--padding-m) var(--padding-xl);
+    border-radius: var(--br-xl);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.docs-btn:hover {
+    background-color: var(--primary-text-color);
+    color: var(--bg-color);
+}
+
 nav button{
    background-color: #fff; 
    border: none;
@@ -51,7 +74,7 @@ nav button{
    color:black;
    padding: var(--padding-m);
    border-radius:var(--br-xl) ;
-
+   cursor: pointer;
 }
 
 section{

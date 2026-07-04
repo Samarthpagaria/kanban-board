@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kanban Board - Documentation</title>
+  <link rel="stylesheet" href="docs.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="docs-container">
+    <header class="docs-header">
+      <div class="version-badge">v1.0.0</div>
+      <div class="subtitle">Technical Specs</div>
+      <h1 class="title">Kanban Board</h1>
+      <p class="description">Full technical and architectural documentation of the Kanban Board task management app.</p>
+      <a href="index.html" class="back-link">&larr; Back to Board</a>
+    </header>
+
+    <section class="docs-section">
+      <h2>1. Project Overview</h2>
+      <p>Kanban Board is a lightweight, purely client-side task management application built with vanilla HTML, CSS, and JavaScript. It provides a familiar three-column workflow — To Do, In Progress, Done — letting users organize tasks through intuitive drag-and-drop, with zero backend dependency.</p>
+      <p>The project focuses on proving that a genuinely useful, persistent productivity tool can be built with no frameworks, no build step, and no database — just the browser.</p>
+
+      <h3>Purpose</h3>
+      <p>Kanban Board aims to deliver a fast, no-setup task tracker that works entirely offline-capable in the browser, demonstrating clean vanilla-JS architecture without relying on any external libraries or frameworks.</p>
+
+      <h3>Core Functionalities</h3>
+      <ul>
+        <li>Create tasks with a title and description via a custom modal</li>
+        <li>Drag-and-drop tasks across columns using the native HTML5 Drag & Drop API</li>
+        <li>Delete tasks with a single click via global event delegation</li>
+        <li>Live task-count badges per column</li>
+        <li>Full state persistence across page reloads via localStorage</li>
+      </ul>
+
+      <h3>Target Users</h3>
+      <ul>
+        <li>Individuals or small teams wanting a quick, no-signup task board</li>
+        <li>Developers evaluating clean vanilla-JS patterns without framework overhead</li>
+        <li>Anyone needing an offline-friendly, dependency-free productivity tool</li>
+      </ul>
+
+      <h3>Value Proposition</h3>
+      <p>Kanban Board delivers instant usability and high performance with zero dependencies — no backend, no database, no build tools — by treating the DOM itself as the single source of truth and syncing state from it directly.</p>
+    </section>
+
+    <section class="docs-section">
+      <h2>2. Tech Stack</h2>
+      <div class="table-wrapper">
+        <table>
+          <tbody>
+            <tr>
+              <td><strong>Markup</strong></td>
+              <td>HTML5 — semantic structural tags with fixed column containers</td>
+            </tr>
+            <tr>
+              <td><strong>Styling</strong></td>
+              <td>Vanilla CSS — CSS Custom Properties (<code>:root</code> variables) + Flexbox layout</td>
+            </tr>
+            <tr>
+              <td><strong>Scripting</strong></td>
+              <td>Vanilla JavaScript (ES6) — global script, native DOM APIs, no modules/IIFEs</td>
+            </tr>
+            <tr>
+              <td><strong>External Assets</strong></td>
+              <td>Google Fonts (Quicksand) — no JS libraries or CSS frameworks used</td>
+            </tr>
+            <tr>
+              <td><strong>Data Persistence</strong></td>
+              <td>Browser localStorage (single JSON blob, key: <code>tasks</code>)</td>
+            </tr>
+            <tr>
+              <td><strong>Hosting</strong></td>
+              <td>Static file deployment — no build step, no bundler</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="docs-section highlight-section">
+      <h2>3. How It's Made (Architecture & Workflows)</h2>
+      
+      <div class="architecture-card">
+        <h3>Drag & Drop Engine</h3>
+        <p>Built entirely on the native HTML5 Drag & Drop API (<code>draggable</code>, <code>dragenter</code>, <code>dragleave</code>, <code>dragover</code>, <code>drop</code>) — deliberately bypassing the native <code>dataTransfer</code> object in favor of a single global reference (<code>dragElement</code>) that tracks the currently dragged node. Dropped tasks are appended to the bottom of the target column; visual feedback is handled via a <code>.hover-over</code> class that scales the column (1.02x) and applies a dashed border on <code>dragenter</code>.</p>
+      </div>
+
+      <div class="architecture-card">
+        <h3>DOM-as-Source-of-Truth State Sync</h3>
+        <p>Rather than the conventional "update state &rarr; re-render DOM" flow, this app inverts it: the DOM action happens first, then the entire <code>tasksData</code> object is rebuilt by querying the live DOM for every column's current tasks. This guarantees the saved state always matches exactly what the user sees, with no drift between UI and data.</p>
+      </div>
+
+      <div class="architecture-card">
+        <h3>Persistence Layer</h3>
+        <p>Every state-changing action (add, drag-drop, delete) synchronously serializes <code>tasksData</code> to <code>localStorage</code> under the <code>tasks</code> key — no debouncing, no batching. On page load, the saved JSON is parsed and the DOM is rehydrated node-by-node via <code>document.createElement</code>.</p>
+      </div>
+
+      <div class="architecture-card">
+        <h3>Task Lifecycle</h3>
+        <p>Tasks carry no unique IDs, timestamps, or status fields in their data — status is implied entirely by which column's array they live in. Deletion uses a single delegated click listener on the document, locating the parent task node and triggering a scoped rebuild of just that column's state.</p>
+      </div>
+    </section>
+
+    <section class="docs-section">
+      <h2>4. Data Model</h2>
+      <p>Hover over each structure to reveal its shape (no database — this is the in-memory + localStorage JSON structure).</p>
+
+      <div class="reveal-card">
+        <div class="reveal-header">Board State (tasksData) <span class="reveal-hint">Hover to view</span></div>
+        <div class="reveal-content">
+          <p>Top-level object keyed by column ID (<code>todo</code>, <code>progress</code>, <code>done</code>), each mapping to an array of tasks.</p>
+<pre><code>{
+  "todo": [ ... ],
+  "progress": [ ... ],
+  "done": [ ... ]
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="reveal-card">
+        <div class="reveal-header">Task Object <span class="reveal-hint">Hover to view</span></div>
+        <div class="reveal-content">
+          <p>Minimal shape — just <code>title</code> and <code>description</code>. No ID, timestamp, or status field; position and parent column imply everything.</p>
+<pre><code>{
+  "title": "Fix bug",
+  "description": "Details about bug..."
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="docs-section">
+      <h2>5. File Structure</h2>
+      <ul>
+        <li><strong>index.html</strong>: Core semantic layout, fixed column containers, and markup for the task-creation modal.</li>
+        <li><strong>style.css</strong>: All CSS variables, resets, Flexbox layout rules, hover states, and modal transitions.</li>
+        <li><strong>script.js</strong>: DOM selection, drag-and-drop bindings, task CRUD via DOM manipulation, and full localStorage serialization/deserialization logic.</li>
+      </ul>
+      <p>Script and stylesheet are linked conventionally — CSS in <code>&lt;head&gt;</code>, JS via a single <code>&lt;script&gt;</code> tag just before <code>&lt;/body&gt;</code>.</p>
+    </section>
+
+    <section class="docs-section">
+      <h2>6. UI/UX Details</h2>
+      <p>Layout is Flexbox-driven throughout: a full-height flex column wraps the app, the board section is a flex row with <code>flex-grow: 1</code>, and each column is an internal flex column with consistent gaps. No media queries are implemented — the layout targets desktop viewports.</p>
+      <p>The "Add Task" modal is a custom <code>div</code>-based overlay (not native <code>&lt;dialog&gt;</code>), using <code>backdrop-filter: blur(10px)</code> over an <code>rgba</code> background for a glassmorphism effect behind a solid modal panel. Drag transitions use a soft <code>cubic-bezier(0.19,1,0.22,1)</code> easing curve for a fluid, weighted feel. Delete buttons carry a subtle red tint and sit flush to the bottom-right of each card via <code>align-self: flex-end</code>.</p>
+    </section>
+
+    <section class="docs-section">
+      <h2>7. Deployment Specifics</h2>
+      <div class="table-wrapper">
+        <table>
+          <tbody>
+            <tr>
+              <td><strong>Hosting</strong></td>
+              <td>Static raw file deployment — no host-specific config detected</td>
+            </tr>
+            <tr>
+              <td><strong>Build Step</strong></td>
+              <td>None — no package.json, bundler, or transpiler required</td>
+            </tr>
+            <tr>
+              <td><strong>Live URL</strong></td>
+              <td>Not present in codebase comments or config</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="docs-footer">
+      <p>Kanban Board Documentation &copy; 2026. Minimalist theme configured.</p>
+    </footer>
+  </div>
+</body>
+</html>
